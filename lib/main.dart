@@ -1,4 +1,5 @@
 import 'package:bmi_calculator/input.dart';
+import 'package:bmi_calculator/result.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -13,7 +14,15 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xFF0A0E21),
         scaffoldBackgroundColor: Color(0xFF0A0E21),
       ),
-      home: Input(),
+      initialRoute: Input.id,
+      routes: {
+        'input':(context)=> Input(),
+        'result':(context)=> Result(),
+
+
+
+
+      },
     );
   }
 }
