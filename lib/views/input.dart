@@ -1,7 +1,10 @@
+import 'package:bmi_calculator/calculator.dart';
+import 'package:bmi_calculator/components/bottom_button.dart';
 import 'package:bmi_calculator/components/constants.dart';
 import 'package:bmi_calculator/components/icon_content.dart';
 import 'package:bmi_calculator/components/reusable_card.dart';
-import 'package:bmi_calculator/result.dart';
+import 'package:bmi_calculator/components/round_icon_button.dart';
+import 'package:bmi_calculator/views/result.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -20,7 +23,7 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   Gender selectedGender;
   int height = 160;
-  int weight = 100;
+  int weight = 70;
   int age = 25;
 
   @override
@@ -133,10 +136,21 @@ class _InputState extends State<Input> {
                             'WEIGHT',
                             style: kLabelTextStyle,
                           ),
-                          Text(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                            children: <Widget>[
+                            Text(
                             weight.toString(),
                             style: kNumberTextStyle,
                           ),
+                          Text(
+                          'kg',
+                          style: kLabelTextStyle,
+                        ),
+                          ],),
+                          
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -210,39 +224,18 @@ class _InputState extends State<Input> {
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () => Navigator.pushNamed(context, Result.id),
-              child: Container(
-                child: Text('CALCULATOR', ),
-                color: kBottomContainerColor,
-                margin: EdgeInsets.only(top: 10.0),
-                width: double.infinity,
-                height: kBottomContainerHeight,
-              ),
-            )
+             BottomButton(title: 'CALCULATOR',onPressed: (){
+               Calculator calculator = Calculator(height: height, weight: weight);
+               Navigator.push(context, MaterialPageRoute(builder: (context) => Result(
+                 bmiResult: calculator.getCalculatorBMI(),
+                 resultText: calculator.getResult(),
+                 interpretation: calculator.getInterpretation(),
+               )));
+             },)
           ],
         ));
   }
 }
 
-class RoundIconButton extends StatelessWidget {
-  RoundIconButton({this.icon, this.onPressed});
 
-  final IconData icon;
-  final Function onPressed;
 
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      elevation: 0.0,
-      child: Icon(icon),
-      onPressed: onPressed,
-      constraints: BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
-      ),
-      shape: CircleBorder(),
-      fillColor: Color(0xFF4C4F5E),
-    );
-  }
-}
